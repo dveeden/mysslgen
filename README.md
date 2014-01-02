@@ -47,10 +47,8 @@ CentOS6
 Install the IUS repo: http://www.iuscommunity.org/pages/IUSClientUsageGuide.html
 Then:
 
-```
-yum install python33 python33-distribute gcc openssl-devel
-easy_install-3.3 pyOpenSSL
-```
+	yum install python33 python33-distribute gcc openssl-devel
+	easy_install-3.3 pyOpenSSL
 
 License
 =======
