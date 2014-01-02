@@ -218,3 +218,11 @@ else:
     with open(clientcertfile, 'r') as fh:
         pemcert = fh.read()
     clientcert = crypto.load_certificate(crypto.FILETYPE_PEM, pemcert)
+
+print('The client setup: (Place in ~/.my.cnf or your global config)')
+print('[client]')
+print('ssl-ca = {cafile}'.format(cafile=CAcertfile))
+print('ssl-cert = {certfile}'.format(certfile=clientcertfile))
+print('ssl-key = {keyfile}'.format(keyfile=clientkeyfile))
+print('\nDon\'t forget to specify REQUIRE SSL or REQUIRE X509 (if you want to force SSL for a user.')
+print('See also: http://dev.mysql.com/doc/refman/5.7/en/grant.html')
