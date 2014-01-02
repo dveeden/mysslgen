@@ -4,7 +4,10 @@ import os
 import io
 import logging
 import argparse
-import configparser
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 import platform
 
 # External
