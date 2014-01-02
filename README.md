@@ -11,7 +11,7 @@ It will generate the server and client options which must be added to your confi
 
 Usage
 =====
-usage: myssl.py [-h] [--config CONFFILE] [--ssldir SSLDIR]
+usage: mysslgen.py [-h] [--config CONFFILE] [--ssldir SSLDIR]
 
 Manage SSL Certificates for MySQL
 
