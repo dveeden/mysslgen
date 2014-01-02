@@ -19,6 +19,7 @@ parser.add_argument('--config', dest='conffile', default='/etc/my.cnf')
 parser.add_argument('--ssldir', dest='ssldir', default='/etc/mysql/ssl')
 args = parser.parse_args()
 
+daysvalid = 365
 ssldir = args.ssldir
 CAkeyfile = os.path.join(ssldir, 'CAkey.pem')
 CAcertfile = os.path.join(ssldir, 'CAcert.pem')
@@ -65,7 +66,7 @@ if not os.path.exists(CAcertfile) or os.stat(CAcertfile).st_size == 0:
     CAcert = crypto.X509()
     CAcert.get_subject().CN = 'MySQL CA {node}'.format(node=platform.node())
     CAcert.gmtime_adj_notBefore(0)
-    CAcert.gmtime_adj_notAfter(60*60*24*10)
+    CAcert.gmtime_adj_notAfter(60*60*24*daysvalid)
     CAcert.set_pubkey(CAkey)
     CAcert.set_issuer(CAcert.get_subject())
     CAcert.add_extensions([
@@ -118,7 +119,7 @@ if not os.path.exists(servercertfile) or os.stat(servercertfile).st_size == 0:
     servercert = crypto.X509()
     servercert.get_subject().CN = 'MySQL Server {node}'.format(node=platform.node())
     servercert.gmtime_adj_notBefore(0)
-    servercert.gmtime_adj_notAfter(60*60*24*10)
+    servercert.gmtime_adj_notAfter(60*60*24*daysvalid)
     servercert.set_pubkey(serverkey)
     servercert.set_issuer(CAcert.get_subject())
     servercert.sign(CAkey, 'sha1')
@@ -206,7 +207,7 @@ if not os.path.exists(clientcertfile) or os.stat(clientcertfile).st_size == 0:
     clientcert = crypto.X509()
     clientcert.get_subject().CN = 'MySQL Server {node}'.format(node=platform.node())
     clientcert.gmtime_adj_notBefore(0)
-    clientcert.gmtime_adj_notAfter(60*60*24*10)
+    clientcert.gmtime_adj_notAfter(60*60*24*daysvalid)
     clientcert.set_pubkey(clientkey)
     clientcert.set_issuer(CAcert.get_subject())
     clientcert.sign(CAkey, 'sha1')
