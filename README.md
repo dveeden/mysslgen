@@ -24,3 +24,7 @@ Requirements
 ============
 
  - pyOpenSSL (Ubuntu: python3-openssl)
+
+License
+=======
+This project is licensed under GPLv2
