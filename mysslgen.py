@@ -9,6 +9,7 @@ try:
 except ImportError:
     import ConfigParser as configparser
 import platform
+import stat
 
 # External
 from OpenSSL import crypto
@@ -46,7 +47,10 @@ if not os.path.isdir(ssldir):
     mylog.info('SSL Directory {ssldir} does not exist, creating it.'.format(ssldir=ssldir))
     os.mkdir(ssldir, mode=0o700)
 
-# TODO: test if mode of dir is secure (0o700)
+if os.path.isdir(ssldir):
+    ssldirSecure = stat.S_IMODE(os.lstat(ssldir).st_mode) == 0o700
+    if not ssldirSecure:
+        mylog.info('SSL Directory {ssldir} is not secure.'.format(ssldir=ssldir))
 
 if not os.path.exists(CAkeyfile) or os.stat(CAkeyfile).st_size == 0:
     mylog.info('No or empty CA key file found, creating it.')
@@ -62,7 +66,9 @@ else:
     with open(CAkeyfile, 'r') as fh:
         pemkey = fh.read()
     CAkey = crypto.load_privatekey(crypto.FILETYPE_PEM, pemkey)
-    # TODO: Check if the permissions on the key file are secure
+    CAkeyfileSecure = stat.S_IMODE(os.lstat(CAkeyfile).st_mode) == 0o600
+    if not CAkeyfileSecure:
+        mylog.info('CA key {CAkeyfile} is not secure.'.format(CAkeyfile=CAkeyfile))
 
 if not os.path.exists(CAcertfile) or os.stat(CAcertfile).st_size == 0:
     mylog.info('No or empty CA certificate file found, creating it.')
@@ -115,7 +121,9 @@ else:
     with open(serverkeyfile, 'r') as fh:
         pemkey = fh.read()
     serverkey = crypto.load_privatekey(crypto.FILETYPE_PEM, pemkey)
-    # TODO: Check if the permissions on the key file are secure
+    serverkeySecure = stat.S_IMODE(os.lstat(CAkeyfile).st_mode) == 0o600
+    if not serverkeySecure:
+        mylog.info('Server key {serverkeyfile} is not secure.'.format(serverkeyfile=serverkeyfile))
 
 if not os.path.exists(servercertfile) or os.stat(servercertfile).st_size == 0:
     mylog.info('No or empty server certificate file found, creating it.')
