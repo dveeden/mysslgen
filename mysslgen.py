@@ -48,7 +48,7 @@ if not os.path.isdir(ssldir):
 
 # TODO: test if mode of dir is secure (0o700)
 
-if not os.path.exists(CAkeyfile) or os.stat(CAkeyfile).st_size == 0: 
+if not os.path.exists(CAkeyfile) or os.stat(CAkeyfile).st_size == 0:
     mylog.info('No or empty CA key file found, creating it.')
     CAkey = crypto.PKey()
     CAkey.generate_key(crypto.TYPE_RSA, 2048)
@@ -99,7 +99,7 @@ if not os.path.exists(serverkeyfile) or os.stat(serverkeyfile).st_size == 0:
         # for MySQL (Bug #71271)
         # pemkey = crypto.dump_privatekey(crypto.FILETYPE_PEM, serverkey)
         asn1key = crypto.dump_privatekey(crypto.FILETYPE_ASN1, serverkey)
-        b64key = base64.b64encode(asn1key) 
+        b64key = base64.b64encode(asn1key)
         fh.write('-----BEGIN RSA PRIVATE KEY-----\n')
         b64str = b64key.decode('ascii')
         start = 0
@@ -187,7 +187,7 @@ if not os.path.exists(clientkeyfile) or os.stat(clientkeyfile).st_size == 0:
         # for MySQL (Bug #71271)
         # pemkey = crypto.dump_privatekey(crypto.FILETYPE_PEM, clientkey)
         asn1key = crypto.dump_privatekey(crypto.FILETYPE_ASN1, clientkey)
-        b64key = base64.b64encode(asn1key) 
+        b64key = base64.b64encode(asn1key)
         fh.write('-----BEGIN RSA PRIVATE KEY-----\n')
         b64str = b64key.decode('ascii')
         start = 0
