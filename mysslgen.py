@@ -86,6 +86,9 @@ if not os.path.exists(CAcertfile) or os.stat(CAcertfile).st_size == 0:
     CAcert.add_extensions([
         crypto.X509Extension(b"authorityKeyIdentifier", False, b"keyid:always", issuer=CAcert)
     ])
+    CAcert.add_extensions([
+        crypto.X509Extension(b"crlDistributionPoints", False, b"URI:http://127.0.0.1/my.crl", issuer=CAcert)
+    ])
     CAcert.sign(CAkey, 'sha1')
     with open(CAcertfile, 'w') as fh:
         pemcert = crypto.dump_certificate(crypto.FILETYPE_PEM, CAcert)
@@ -135,6 +138,9 @@ if not os.path.exists(servercertfile) or os.stat(servercertfile).st_size == 0:
     servercert.set_serial_number(0x2)
     servercert.set_pubkey(serverkey)
     servercert.set_issuer(CAcert.get_subject())
+    servercert.add_extensions([
+        crypto.X509Extension(b"crlDistributionPoints", False, b"URI:http://127.0.0.1/my.crl", issuer=CAcert)
+    ])
     servercert.sign(CAkey, 'sha1')
     with open(servercertfile, 'w') as fh:
         pemcert = crypto.dump_certificate(crypto.FILETYPE_PEM, servercert)
@@ -224,6 +230,9 @@ if not os.path.exists(clientcertfile) or os.stat(clientcertfile).st_size == 0:
     clientcert.set_serial_number(0x3)
     clientcert.set_pubkey(clientkey)
     clientcert.set_issuer(CAcert.get_subject())
+    clientcert.add_extensions([
+        crypto.X509Extension(b"crlDistributionPoints", False, b"URI:http://127.0.0.1/my.crl", issuer=CAcert)
+    ])
     clientcert.sign(CAkey, 'sha1')
     with open(clientcertfile, 'w') as fh:
         pemcert = crypto.dump_certificate(crypto.FILETYPE_PEM, clientcert)
