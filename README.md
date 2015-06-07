@@ -27,7 +27,9 @@ make sure MySQL is able to read the key files.
 Requirements
 ============
  - Python 3 (or Python >= 2.7)
- - pyOpenSSL (Ubuntu: python3-openssl)
+ - pyOpenSSL
+  - Ubuntu: python3-openssl
+  - Fedora: python3-pyOpenSSL
 
 Python version
 ==============
