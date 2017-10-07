@@ -16,7 +16,7 @@ except ImportError:
 # External
 from OpenSSL import crypto
 
-logging.basicConfig(logging=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 mylog = logging.getLogger(__name__)
 mylog.setLevel(logging.DEBUG)
 
