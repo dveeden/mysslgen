@@ -1,15 +1,17 @@
 #!/usr/bin/python3 -tt
+import argparse
 import base64
-import os
 import io
 import logging
-import argparse
+import os
+import platform
+import stat
+import sys
+
 try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
-import platform
-import stat
 
 # External
 from OpenSSL import crypto
