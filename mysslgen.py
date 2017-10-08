@@ -6,7 +6,6 @@ import logging
 import os
 import platform
 import stat
-import sys
 
 try:
     import configparser
