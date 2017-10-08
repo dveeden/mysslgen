@@ -25,7 +25,7 @@ parser.add_argument('--ssldir', dest='ssldir', default='/etc/mysql/ssl')
 parser.add_argument('--ca-cn', dest='ca_cn', default=platform.node(), help='Set the CA name (default: %(default)s)')
 parser.add_argument('--server-cn', dest='server_cn', default=platform.node(), help='Set the server name in the CN (default: %(default)s)')
 parser.add_argument('--client-cn', dest='client_cn', default=platform.node(), help='Set the client name in the CN (default: %(default)s)')
-parser.add_argument('--valid', type=int, dest='valid_for', default=365, help='Set the number of life of the certificate (default: %(default)s days)')
+parser.add_argument('--valid', type=int, dest='valid_for', default=365, help='Set the expiry date in days (default: %(default)s days)')
 args = parser.parse_args()
 
 daysvalid = args.valid_for
