@@ -22,10 +22,17 @@ mylog.setLevel(logging.DEBUG)
 parser = argparse.ArgumentParser(description='Manage SSL Certificates for MySQL')
 parser.add_argument('--config', dest='conffile', default='/etc/my.cnf')
 parser.add_argument('--ssldir', dest='ssldir', default='/etc/mysql/ssl')
+parser.add_argument('--ca-cn', dest='ca_cn', default=platform.node(), help='Set the CA name (default: %(default)s)')
+parser.add_argument('--server-cn', dest='server_cn', default=platform.node(), help='Set the server name in the CN (default: %(default)s)')
+parser.add_argument('--client-cn', dest='client_cn', default=platform.node(), help='Set the client name in the CN (default: %(default)s)')
+parser.add_argument('--valid', type=int, dest='valid_for', default=365, help='Set the expiry date in days (default: %(default)s days)')
 args = parser.parse_args()
 
-daysvalid = 365
+daysvalid = args.valid_for
 ssldir = args.ssldir
+ca_cn = args.ca_cn
+server_cn = args.server_cn
+client_cn = args.client_cn
 CAkeyfile = os.path.join(ssldir, 'CAkey.pem')
 CAcertfile = os.path.join(ssldir, 'CAcert.pem')
 serverkeyfile = os.path.join(ssldir, 'server-key.pem')
@@ -74,7 +81,7 @@ else:
 if not os.path.exists(CAcertfile) or os.stat(CAcertfile).st_size == 0:
     mylog.info('No or empty CA certificate file found, creating it.')
     CAcert = crypto.X509()
-    CAcert.get_subject().CN = 'MySQL CA {node}'.format(node=platform.node())
+    CAcert.get_subject().CN = 'MySQL CA {node}'.format(node=ca_cn)
     CAcert.gmtime_adj_notBefore(0)
     CAcert.gmtime_adj_notAfter(60*60*24*daysvalid)
     CAcert.set_serial_number(0x1)
@@ -130,7 +137,7 @@ else:
 if not os.path.exists(servercertfile) or os.stat(servercertfile).st_size == 0:
     mylog.info('No or empty server certificate file found, creating it.')
     servercert = crypto.X509()
-    servercert.get_subject().CN = 'MySQL Server {node}'.format(node=platform.node())
+    servercert.get_subject().CN = 'MySQL Server {node}'.format(node=server_cn)
     servercert.gmtime_adj_notBefore(0)
     servercert.gmtime_adj_notAfter(60*60*24*daysvalid)
     servercert.set_serial_number(0x2)
@@ -219,7 +226,7 @@ else:
 if not os.path.exists(clientcertfile) or os.stat(clientcertfile).st_size == 0:
     mylog.info('No or empty client certificate file found, creating it.')
     clientcert = crypto.X509()
-    clientcert.get_subject().CN = 'MySQL Server {node}'.format(node=platform.node())
+    clientcert.get_subject().CN = 'MySQL Server {node}'.format(node=client_cn)
     clientcert.gmtime_adj_notBefore(0)
     clientcert.gmtime_adj_notAfter(60*60*24*daysvalid)
     clientcert.set_serial_number(0x3)
